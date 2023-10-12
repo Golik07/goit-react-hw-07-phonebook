@@ -4,6 +4,7 @@ import { filterContacts } from 'redux/filterSlice';
 
 const FilterContact = () => {
   const { filter } = useSelector(state => state);
+
   const dispatch = useDispatch();
 
   const changeFilter = e => {
