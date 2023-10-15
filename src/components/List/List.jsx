@@ -1,15 +1,17 @@
-import { deleteContacts } from 'redux/contactsSlice';
 import Item from './Item/Item';
 import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { getContacts } from 'service/api';
+import { getContactsState } from 'redux/selectors';
 
 const List = () => {
   const dispatch = useDispatch();
-  const { contacts } = useSelector(state => state.contacts);
+  const { contacts } = useSelector(getContactsState);
   const { filter } = useSelector(state => state);
 
-  const handleDelete = id => {
-    dispatch(deleteContacts(id));
-  };
+  useEffect(() => {
+    dispatch(getContacts());
+  }, [dispatch]);
 
   const getVisibleContacts = () => {
     const normalizedFilter = filter.toLowerCase();
@@ -23,13 +25,7 @@ const List = () => {
   return (
     <ul>
       {visibleContacts.map(({ id, number, name }) => (
-        <Item
-          id={id}
-          key={id}
-          name={name}
-          number={number}
-          handleDelete={handleDelete}
-        ></Item>
+        <Item id={id} key={id} name={name} number={number}></Item>
       ))}
     </ul>
   );
